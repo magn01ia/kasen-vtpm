@@ -28,13 +28,13 @@ var map = new maplibregl.Map({
 //PMTiles
 let protocol = new pmtiles.Protocol();
 maplibregl.addProtocol("pmtiles", protocol.tile);
-const p = new pmtiles.PMTiles("https://magn01ia.github.io/kasen-vtpm/zxy/kasen.pmtiles")
+const p = new pmtiles.PMTiles("https://magn01ia.github.io/kasen-vtpm/pmtiles/kasen.pmtiles")
 protocol.add(p);
 
 map.on('load', () => {
   map.addSource("pmtiles", {
     type: "vector",
-    url: "pmtiles://https://magn01ia.github.io/kasen-vtpm/zxy/kasen.pmtiles",
+    url: "pmtiles://https://magn01ia.github.io/kasen-vtpm/pmtiles/kasen.pmtiles",
     attribution: '<a href="https://github.com/amx-project">法務省地図XMLアダプトプロジェクト</a>'
   });
   map.addLayer({
