@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>kasen-vtpm</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <script src="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.js"></script>
+  <script src="https://unpkg.com/pmtiles@2.7.0/dist/index.js"></script>
+  <link href="https://unpkg.com/maplibre-gl@2.4.0/dist/maplibre-gl.css" rel="stylesheet" />
+  <style>
+  body { margin: 0; padding: 0; }
+  #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+  </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+var map = new maplibregl.Map({
+    container: 'map', // container id
+    style: 'https://gsi-cyberjapan.github.io/gsivectortile-mapbox-gl-js/pale.json', // style URL
+    center: [140.084556, 36.104611], // starting position [lng, lat]
+    zoom: 7, // starting zoom
+    maxZoom: 4, // min zoom
+    maxZoom: 17 // max zoom
+    });  
+    map.on('load', function () {  
+    });
+//PMTiles
+let protocol = new pmtiles.Protocol();
+maplibregl.addProtocol("pmtiles", protocol.tile);
+const p = new pmtiles.PMTiles("https://magn01ia.github.io/kasen-vtpm/zxy/kasen.pmtiles")
+protocol.add(p);
+
+map.on('load', () => {
+  map.addSource("pmtiles", {
+    type: "vector",
+    url: "pmtiles://https://magn01ia.github.io/kasen-vtpm/zxy/kasen.pmtiles",
+    attribution: '<a href="https://github.com/amx-project">法務省地図XMLアダプトプロジェクト</a>'
+  });
+  map.addLayer({
+    "id": "stream",
+    "source": "pmtiles",
+    "source-layer": "stream",
+    "type": "line",
+    'paint': {
+      'line-color': '#009966',
+      'line-width': 5
+      //'circle-radius': 2
+    }
+  });
+});
+map.addControl(new maplibregl.FullscreenControl());
+</script>
+</body>
+</html>
